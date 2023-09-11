@@ -1,5 +1,5 @@
 # PrintMaker
-https://miiqan.github.io/PrintMaker
+https://printmaker.pages.dev/
 
 プリントをデジタルで簡単に生成できるwebサイトです。
 ぜひご活用ください。
