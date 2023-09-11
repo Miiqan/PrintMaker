@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!-- Made by Miiqan -->
+<!-- PrintMaker -->
+<!-- 2023/09/11 -->
+<html>
+<head>
+  <title>Print Maker</title>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  
+  <style>
+    #textInput {
+      display: none;
+    }
+    .box {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      border: 2px solid black;
+    }
+    button{
+      border-radius: 5px;
+      background: #4676D7;
+      color: #ffffff;
+    }   
+    button:hover {
+      background: #1d49aa;
+    }
+    .resize-drag {
+      position: absolute;
+      touch-action: none;
+    }
+    .draggable {
+      position: absolute;
+      cursor: move;
+    }
+    #paper {
+      position: relative;
+      width: 595px; 
+      height: 842px; 
+      background: white;
+    }
+    #header {
+      position: absolute;
+      width: 97%;
+      height: 14%; 
+      border-bottom: 2px solid black;
+    }
+    #leftText {
+      position: absolute;
+      left: 2%;
+      top: 50%;
+      font-weight: bold;
+      transform: translateY(-50%);
+      font-size: 40px;
+      width: calc(75% - 4%); 
+      border-right: 2px solid black;
+      padding-right: 2%;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    #rightText {
+      position: absolute;
+      right: 2%;
+      top: 50%;
+      font-weight: bold;
+      transform: translateY(-50%);
+      font-size: 14px;
+      width: calc(25% - 4%); 
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="font-size:40px;">Print Maker</h1>
+  <button id="open">編集画面を表示する</button>
+  <div id="editor" hidden>
+    <button id="hide">編集画面を非表示にする</button>
+    <fieldset style="border: 5px double #000000; padding: 10px;">
+      <legend>全体設定</legend>
+      <label for="background-color">背景色ㅤ:</label>
+      <input type="color" id="background-color" value="#ffffff">
+      <br />
+      <label for="background-image">背景画像:</label>
+      <input type="file" id="background-image" accept="image/*">
+    </fieldset>
+    <br />
+    <fieldset style="border: 5px double #000000; padding: 10px;">
+      <legend>タイトル設定</legend>
+      <label for="titlee">プリント名:</label>
+      <input type="text" id="titlee" value="PrintName" style="width: 80px;"><br>
+      <label for="font">フォントㅤ:</label>
+      <select id="font">
+          <option value="Arial">Arial</option>
+          <option value="Courier New">Courier New</option>
+          <option value="Georgia">Georgia</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Verdana">Verdana</option>
+      </select>
+  <br>
+      <label for="fontSize">文字サイズ:</label>
+      <select id="fontSize">
+          <option value="35px">35</option>
+          <option value="40px" selected>40</option>
+          <option value="42px">42</option>
+          <option value="45px">45</option>
+          <option value="47px">47</option>
+          <option value="47px">50</option>
+      </select><br><br>
+      <label for="header-color">背景色:</label>
+      <input type="color" id="header-color" value="#ffffff">
+      <br />
+      <label for="left-text-color">文字色:</label>
+      <input type="color" id="left-text-color" value="#000000">
+      <br /><br>
+      <span>文字の設定:</span><br>
+      <label for="issue">第</label>
+      <input type="text" id="issue" value="1" style="width: 28px; text-align: center;"><span> 号</span>
+      <br />
+      <input type="text" id="month" value="1" style="width: 28px; text-align: center;">
+      <label for="day" >月</label>
+      <input type="text" id="day" value="1" style="width: 28px; text-align: center;">
+      <label for="weekday">日</label>
+      <input type="text" id="weekday" value="月" style="width: 28px; text-align: center;">
+    </fieldset>
+      <br>
+    <fieldset style="border: 5px double #000000; padding: 10px;">
+      <legend>要素を追加</legend>
+      <label for="text">テキストㅤ:</label>
+      <input type="text" id="text" placeholder="テキスト">
+      <br>
+      <label for="size">文字サイズ:</label>
+      <input type="text" id="size" placeholder="文字サイズ">
+      <br>
+      <label for="color">文字色ㅤㅤ:</label>
+      <input type="color" id="color" value="#000000">
+      <br>
+      <button id="addText">テキストを追加</button>
+      <br><br>
+      <label for="box-color">Boxの色:</label>
+      <input type="color" id="box-color" value="#ffffff">
+      <br />
+      <button id="create-box">Boxを追加</button>
+      <br><br>
+      <label for="line-color">線の色:</label>
+      <input type="color" id="line-color">
+      <br />
+      <button id="add-line">線を追加</button>
+      <br><br>
+      <label for="color">画像を追加:</label>
+      <input type="file" id="imageUpload" accept="image/*">
+    </fieldset>
+  </div>
+  <br><br><button id="save">画像として保存</button><br><br>
+  <div id="paper" style="padding: 10px; margin-bottom: 10px; border: 1px solid #333333;">
+    <div id="header">
+      <div id="leftText">PrintName</div>
+      <div id="rightText">
+        <div id="issueText" style="text-align: center;">第1号</div>
+        <div id="dateText" style="text-align: center;">1月1日(月) 発行</div>
+      </div>
+    </div>
+  </div>
+</body>
+<footer>
+  <p>© 2023 All rights reserved by Miiqan</p>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.11/interact.min.js"></script>
+<script src="js/jquery-ui-touch-punch-master/jquery.ui.touch-punch.js"></script>
+<script src="main.js"></script>
+</html>
