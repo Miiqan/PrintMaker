@@ -167,25 +167,10 @@ document.getElementById('weekday').addEventListener('input', function(e) {
   document.getElementById('dateText').textContent = month + '月' + day + '日(' + e.target.value + ') 発行';
 });
 
-async function postImageToDrive(imageUrl) {
-  var formData = new FormData();
-  var response = await fetch(imageUrl);
-  var blob = await response.blob();
-  formData.append("file", blob, "image.png");
-
-  var scriptUrl = "https://script.google.com/macros/s/AKfycbwNcxpfMVBRV_VgtHjgykqWPjno-deu-Tko-r2TzTokGZzGG6raaIFwMwDLHU5os4Vg/exec"; // Google Apps ScriptのURLを指定
-  await fetch(scriptUrl, {
-    method: "POST",
-    body: formData,
-  });
-  console.log(response)
-}
-
 document.getElementById('save').addEventListener('click', function() {
   html2canvas(document.getElementById('paper'), {
     onrendered: function(canvas) {
       var img = canvas.toDataURL("image/png");
-      postImageToDrive(img);
       var link = document.createElement('a');
       link.href = img;
       var kai = document.getElementById('issue').value;
